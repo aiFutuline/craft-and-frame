@@ -52,6 +52,12 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				steel: {
+					DEFAULT: 'hsl(var(--steel))',
+					light: 'hsl(var(--steel-light))'
+				},
+				industrial: 'hsl(var(--industrial))',
+				'orange-accent': 'hsl(var(--orange-accent))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
