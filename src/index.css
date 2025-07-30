@@ -8,7 +8,7 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 218 27% 94%;
+    --background: 0 0% 98%;
     --foreground: 220 15% 15%;
 
     --card: 0 0% 100%;
@@ -17,16 +17,16 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 220 15% 15%;
 
-    --primary: 210 100% 20%;
+    --primary: 215 25% 27%;
     --primary-foreground: 0 0% 98%;
 
-    --secondary: 220 15% 85%;
+    --secondary: 220 15% 90%;
     --secondary-foreground: 220 15% 15%;
 
-    --muted: 220 15% 90%;
+    --muted: 220 15% 95%;
     --muted-foreground: 220 10% 45%;
 
-    --accent: 25 100% 50%;
+    --accent: 215 25% 27%;
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 84.2% 60.2%;
@@ -34,21 +34,26 @@ All colors MUST be HSL.
 
     --border: 220 15% 85%;
     --input: 220 15% 85%;
-    --ring: 210 100% 20%;
+    --ring: 215 25% 27%;
 
-    /* Custom design tokens */
-    --steel: 220 15% 25%;
-    --steel-light: 220 15% 65%;
-    --industrial: 210 100% 12%;
+    /* Custom design tokens - Steel Gray, White, Dark Blue */
+    --steel: 215 25% 45%;
+    --steel-light: 215 15% 75%;
+    --steel-dark: 215 25% 27%;
+    --industrial: 220 50% 10%;
     --orange-accent: 25 100% 50%;
     
     /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(210 100% 20%), hsl(210 100% 12%));
-    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%), hsl(220 15% 96%));
+    --gradient-hero: linear-gradient(135deg, hsl(215 25% 27%), hsl(220 50% 10%));
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%), hsl(220 15% 98%));
     
     /* Shadows */
-    --shadow-elegant: 0 10px 30px -10px hsl(210 100% 20% / 0.2);
+    --shadow-elegant: 0 10px 30px -10px hsl(215 25% 27% / 0.2);
     --shadow-card: 0 4px 20px -4px hsl(220 15% 25% / 0.1);
+    
+    /* Animations */
+    --animation-duration: 0.6s;
+    --animation-ease: cubic-bezier(0.16, 1, 0.3, 1);
 
     --radius: 0.5rem;
 
@@ -115,5 +120,35 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Scroll animations */
+@layer utilities {
+  .fade-in-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity var(--animation-duration) var(--animation-ease), 
+                transform var(--animation-duration) var(--animation-ease);
+  }
+  
+  .fade-in-up.animate {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .sticky-estimate {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 50;
+    opacity: 0;
+    transform: translateY(100px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
+  .sticky-estimate.show {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

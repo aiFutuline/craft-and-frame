@@ -54,7 +54,8 @@ export default {
 				},
 				steel: {
 					DEFAULT: 'hsl(var(--steel))',
-					light: 'hsl(var(--steel-light))'
+					light: 'hsl(var(--steel-light))',
+					dark: 'hsl(var(--steel-dark))'
 				},
 				industrial: 'hsl(var(--industrial))',
 				'orange-accent': 'hsl(var(--orange-accent))',

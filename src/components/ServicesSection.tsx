@@ -1,9 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Wrench, Building, HomeIcon, Zap } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import fabricationImage from "@/assets/fabrication.jpg";
 import commercialImage from "@/assets/commercial-work.jpg";
+import residentialImage from "@/assets/residential-project.jpg";
+import quickTurnaroundImage from "@/assets/quick-turnaround.jpg";
 
 const ServicesSection = () => {
+  const { ref, isVisible } = useScrollAnimation();
+  
   const services = [
     {
       icon: <Wrench className="w-8 h-8 text-primary" />,
@@ -20,17 +25,19 @@ const ServicesSection = () => {
     {
       icon: <HomeIcon className="w-8 h-8 text-primary" />,
       title: "Residential Projects",
-      description: "Beautiful and secure railings and fences for homes and residential developments."
+      description: "Beautiful and secure railings and fences for homes and residential developments.",
+      image: residentialImage
     },
     {
       icon: <Zap className="w-8 h-8 text-primary" />,
       title: "Quick Turnaround",
-      description: "Fast, efficient service with installation completed within 5-15 business days."
+      description: "Fast, efficient service with installation completed within 5-15 business days.",
+      image: quickTurnaroundImage
     }
   ];
 
   return (
-    <section className="py-20 bg-background">
+    <section ref={ref} className={`py-20 bg-background fade-in-up ${isVisible ? 'animate' : ''}`}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-foreground mb-4">Our Expert Services</h2>

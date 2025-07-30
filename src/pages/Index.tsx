@@ -3,6 +3,8 @@ import HeroSection from "@/components/HeroSection";
 import ServicesSection from "@/components/ServicesSection";
 import BenefitsSection from "@/components/BenefitsSection";
 import ContactSection from "@/components/ContactSection";
+import Footer from "@/components/Footer";
+import StickyEstimateButton from "@/components/StickyEstimateButton";
 
 const Index = () => {
   return (
@@ -12,6 +14,8 @@ const Index = () => {
       <ServicesSection />
       <BenefitsSection />
       <ContactSection />
+      <Footer />
+      <StickyEstimateButton />
     </div>
   );
 };

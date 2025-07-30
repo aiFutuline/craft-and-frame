@@ -1,10 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const ContactSection = () => {
+  const { ref, isVisible } = useScrollAnimation();
+  
   return (
-    <section className="py-20 bg-gradient-to-br from-primary to-industrial text-primary-foreground relative overflow-hidden">
+    <section ref={ref} className={`py-20 bg-gradient-to-br from-primary to-industrial text-primary-foreground relative overflow-hidden fade-in-up ${isVisible ? 'animate' : ''}`}>
       <div className="absolute inset-0 bg-black/10"></div>
       
       <div className="relative container mx-auto px-4">

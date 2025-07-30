@@ -1,7 +1,10 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Clock, DollarSign, Shield, Trophy, Users, Calendar } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const BenefitsSection = () => {
+  const { ref, isVisible } = useScrollAnimation();
+  
   const benefits = [
     {
       icon: <Clock className="w-8 h-8 text-orange-accent" />,
@@ -36,7 +39,7 @@ const BenefitsSection = () => {
   ];
 
   return (
-    <section className="py-20 bg-muted/50">
+    <section ref={ref} className={`py-20 bg-muted/50 fade-in-up ${isVisible ? 'animate' : ''}`}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-foreground mb-4">Why Choose CHALLENGER WA LLC</h2>
