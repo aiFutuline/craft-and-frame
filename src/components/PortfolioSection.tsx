@@ -1,12 +1,46 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const PortfolioSection = () => {
   const { ref, isVisible } = useScrollAnimation();
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+
+  // Блокировка прокрутки при открытом модальном окне
+  useEffect(() => {
+    let scrollY = 0;
+    
+    if (selectedImage !== null) {
+      // Сохраняем текущую позицию прокрутки
+      scrollY = window.scrollY;
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+    } else {
+      // Восстанавливаем прокрутку
+      const savedScrollY = parseInt(document.body.style.top.replace('px', '') || '0');
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      
+      // Восстанавливаем позицию прокрутки
+      if (savedScrollY > 0) {
+        window.scrollTo(0, savedScrollY);
+      }
+    }
+
+    // Очистка при размонтировании компонента
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+    };
+  }, [selectedImage]);
 
   const portfolioItems = [
     {
@@ -82,17 +116,7 @@ const PortfolioSection = () => {
     setSelectedImage(null);
   };
 
-  const nextImage = () => {
-    if (selectedImage !== null) {
-      setSelectedImage((selectedImage + 1) % portfolioItems.length);
-    }
-  };
 
-  const prevImage = () => {
-    if (selectedImage !== null) {
-      setSelectedImage(selectedImage === 0 ? portfolioItems.length - 1 : selectedImage - 1);
-    }
-  };
 
   return (
     <section ref={ref} className={`py-20 bg-background fade-in-up ${isVisible ? 'animate' : ''}`}>
@@ -137,48 +161,56 @@ const PortfolioSection = () => {
 
       {/* Modal */}
       {selectedImage !== null && (
-        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
-          <div className="relative max-w-4xl max-h-[90vh] w-full">
+        <div 
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+          onClick={(e) => {
+            // Закрытие при клике на фон
+            if (e.target === e.currentTarget) {
+              closeModal();
+            }
+          }}
+          onKeyDown={(e) => {
+            // Закрытие по Escape
+            if (e.key === 'Escape') {
+              closeModal();
+            }
+          }}
+          onWheel={(e) => {
+            // Предотвращаем прокрутку внутри модального окна
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+          onTouchMove={(e) => {
+            // Предотвращаем прокрутку на мобильных устройствах
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+          tabIndex={-1}
+          style={{ 
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            overflow: 'hidden'
+          }}
+        >
+          <div className="relative max-w-6xl max-h-[95vh] w-full h-full flex items-center justify-center">
             <button
               onClick={closeModal}
               className="absolute top-4 right-4 z-10 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+              aria-label="Close modal"
             >
               <X className="w-6 h-6" />
             </button>
-            
-            <button
-              onClick={prevImage}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-            
-            <button
-              onClick={nextImage}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
 
-            <div className="bg-white rounded-lg overflow-hidden">
+            <div className="w-full h-full flex items-center justify-center p-4">
               <img 
                 src={portfolioItems[selectedImage].image} 
                 alt={portfolioItems[selectedImage].title}
-                className="w-full h-auto max-h-[60vh] object-contain"
+                className="max-w-full max-h-full object-contain"
+                draggable={false}
               />
-              <div className="p-6">
-                <div className="mb-2">
-                  <span className="text-sm text-orange-600 font-medium">
-                    {portfolioItems[selectedImage].category}
-                  </span>
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                  {portfolioItems[selectedImage].title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {portfolioItems[selectedImage].description}
-                </p>
-              </div>
             </div>
           </div>
         </div>
