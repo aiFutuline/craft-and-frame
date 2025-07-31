@@ -23,7 +23,7 @@ const StickyEstimateButton = () => {
       <Button 
         variant="contact" 
         size="lg" 
-        className="shadow-xl hover:shadow-2xl transition-shadow duration-300 animate-pulse"
+        className="shadow-xl hover:shadow-2xl transition-shadow duration-300"
         onClick={() => window.location.href = 'tel:4254353081'}
       >
         <Phone className="w-5 h-5 mr-2" />
