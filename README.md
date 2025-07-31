@@ -1,54 +1,49 @@
-# Welcome to your Lovable project
+# Steel Railings Website
 
-## Project info
+🏗️ **Developed by aiFutuline Studio**
 
-**URL**: https://lovable.dev/projects/b04eafa4-e6a5-4373-a8e5-9ee3f5ff7715
+A modern, responsive website for a steel railings manufacturing company. Features a professional design with steel gray, white, and dark blue color scheme, smooth scroll animations, and mobile-optimized layout.
 
-## How can I edit this code?
+## ✨ Features
 
-There are several ways of editing your application.
+- **Responsive Design** - Optimized for all devices
+- **Smooth Animations** - Scroll-triggered animations for enhanced UX
+- **Portfolio Gallery** - Showcase of completed projects
+- **Contact Forms** - Easy customer inquiry system
+- **Professional UI** - Clean, modern design aesthetic
+- **Fast Performance** - Built with Vite and optimized assets
 
-**Use Lovable**
+## 🚀 Development
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/b04eafa4-e6a5-4373-a8e5-9ee3f5ff7715) and start prompting.
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
 
-Changes made via Lovable will be committed automatically to this repo.
+### Local Setup
 
-**Use your preferred IDE**
+```bash
+# Clone the repository
+git clone <repository-url>
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+# Navigate to project directory
+cd steel-railings-website
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+# Install dependencies
+npm install
 
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Build for Production
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+# Create production build
+npm run build
 
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+# Preview production build
+npm run preview
+```
 
 ## What technologies are used for this project?
 
