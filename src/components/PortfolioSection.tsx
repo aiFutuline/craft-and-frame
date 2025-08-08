@@ -1,45 +1,27 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const PortfolioSection = () => {
   const { ref, isVisible } = useScrollAnimation();
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
-  // Блокировка прокрутки при открытом модальном окне
+  // Навигация стрелками в модальном окне
   useEffect(() => {
-    let scrollY = 0;
-    
-    if (selectedImage !== null) {
-      // Сохраняем текущую позицию прокрутки
-      scrollY = window.scrollY;
-      document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = '100%';
-    } else {
-      // Восстанавливаем прокрутку
-      const savedScrollY = parseInt(document.body.style.top.replace('px', '') || '0');
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      
-      // Восстанавливаем позицию прокрутки
-      if (savedScrollY > 0) {
-        window.scrollTo(0, savedScrollY);
+    if (selectedImage === null) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") {
+        setSelectedImage((prev) => (prev !== null ? (prev + 1) % portfolioItems.length : prev));
       }
-    }
-
-    // Очистка при размонтировании компонента
-    return () => {
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
+      if (e.key === "ArrowLeft") {
+        setSelectedImage((prev) => (prev !== null ? (prev - 1 + portfolioItems.length) % portfolioItems.length : prev));
+      }
     };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, [selectedImage]);
 
   const portfolioItems = [
@@ -116,10 +98,18 @@ const PortfolioSection = () => {
     setSelectedImage(null);
   };
 
+  const goPrev = (e?: any) => {
+    e?.stopPropagation?.();
+    setSelectedImage((prev) => (prev !== null ? (prev - 1 + portfolioItems.length) % portfolioItems.length : prev));
+  };
 
+  const goNext = (e?: any) => {
+    e?.stopPropagation?.();
+    setSelectedImage((prev) => (prev !== null ? (prev + 1) % portfolioItems.length : prev));
+  };
 
   return (
-    <section ref={ref} className={`py-20 bg-background fade-in-up ${isVisible ? 'animate' : ''}`}>
+    <section id="portfolio" ref={ref} className={`py-20 bg-background ${isVisible ? 'animate-fade-in' : ''}`}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-foreground mb-4">Our Portfolio</h2>
@@ -139,13 +129,15 @@ const PortfolioSection = () => {
                 <img 
                   src={item.image} 
                   alt={item.title}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
               </div>
               <CardContent className="p-6">
                 <div className="mb-2">
-                  <span className="text-sm text-orange-accent font-medium">{item.category}</span>
+                  <span className="text-sm text-primary font-medium">{item.category}</span>
                 </div>
                 <h3 className="text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
                   {item.title}
@@ -160,61 +152,42 @@ const PortfolioSection = () => {
       </div>
 
       {/* Modal */}
-      {selectedImage !== null && (
-        <div 
-          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
-          onClick={(e) => {
-            // Закрытие при клике на фон
-            if (e.target === e.currentTarget) {
-              closeModal();
-            }
-          }}
-          onKeyDown={(e) => {
-            // Закрытие по Escape
-            if (e.key === 'Escape') {
-              closeModal();
-            }
-          }}
-          onWheel={(e) => {
-            // Предотвращаем прокрутку внутри модального окна
-            e.preventDefault();
-            e.stopPropagation();
-          }}
-          onTouchMove={(e) => {
-            // Предотвращаем прокрутку на мобильных устройствах
-            e.preventDefault();
-            e.stopPropagation();
-          }}
-          tabIndex={-1}
-          style={{ 
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            overflow: 'hidden'
-          }}
-        >
-          <div className="relative max-w-6xl max-h-[95vh] w-full h-full flex items-center justify-center">
-            <button
-              onClick={closeModal}
-              className="absolute top-4 right-4 z-10 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
-              aria-label="Close modal"
-            >
-              <X className="w-6 h-6" />
-            </button>
+      <Dialog open={selectedImage !== null} onOpenChange={(open) => { if (!open) closeModal(); }}>
+        <DialogContent className="max-w-5xl w-[95vw] border-none bg-transparent shadow-none p-0">
+          {selectedImage !== null && (
+            <div className="relative">
+              <Button
+                onClick={goPrev}
+                aria-label="Previous image"
+                size="icon"
+                variant="secondary"
+                className="absolute left-2 top-1/2 -translate-y-1/2 z-10"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </Button>
 
-            <div className="w-full h-full flex items-center justify-center p-4">
               <img 
                 src={portfolioItems[selectedImage].image} 
                 alt={portfolioItems[selectedImage].title}
-                className="max-w-full max-h-full object-contain"
+                loading="lazy"
+                decoding="async"
+                className="w-full h-auto max-h-[80vh] object-contain rounded-md"
                 draggable={false}
               />
+
+              <Button
+                onClick={goNext}
+                aria-label="Next image"
+                size="icon"
+                variant="secondary"
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-10"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </Button>
             </div>
-          </div>
-        </div>
-      )}
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };
